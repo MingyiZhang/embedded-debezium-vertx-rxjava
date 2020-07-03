@@ -24,10 +24,28 @@ public class MainVerticle extends AbstractVerticle {
             "dbserver");
     Connection connection = databaseConfig.getConnection();
 
-    vertx.deployVerticle(new PostgresVerticle(connection, "foo", 1000));
-    vertx.deployVerticle(new PostgresVerticle(connection, "bar", 1000));
+    String receiverName1 = "1";
+    String receiverName2 = "2";
+    String tableName1 = "foo";
+    String tableName2 = "bar";
+    String address = "address";
+
+    vertx.deployVerticle(new PostgresVerticle(connection, tableName1, 1000));
+    vertx.deployVerticle(new PostgresVerticle(connection, tableName2, 1000));
+
     vertx.deployVerticle(
-        new DebeziumRecordSenderVerticle(
-            debeziumEngineConfig.getDebeziumEngineProperties(), "address"));
+        new RecordReceiverVerticle(
+            receiverName1,
+            address,
+            RecordReceiverVerticle.defaultMessageFilter(tableName1),
+            RecordReceiverVerticle.defaultMessageHandler(receiverName1)));
+    vertx.deployVerticle(
+        new RecordReceiverVerticle(
+            receiverName2,
+            address,
+            RecordReceiverVerticle.defaultMessageFilter(tableName2),
+            RecordReceiverVerticle.defaultMessageHandler(receiverName2)));
+
+    vertx.deployVerticle(new DebeziumRecordSenderVerticle(debeziumEngineConfig, address));
   }
 }
