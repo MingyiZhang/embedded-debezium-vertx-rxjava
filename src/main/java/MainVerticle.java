@@ -1,5 +1,6 @@
 import config.DatabaseConfig;
 import config.DebeziumEngineConfig;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.reactivex.core.Vertx;
 import java.sql.Connection;
@@ -46,6 +47,8 @@ public class MainVerticle extends AbstractVerticle {
             RecordReceiverVerticle.defaultMessageFilter(tableName2),
             RecordReceiverVerticle.defaultMessageHandler(receiverName2)));
 
-    vertx.deployVerticle(new DebeziumRecordSenderVerticle(debeziumEngineConfig, address));
+    vertx.deployVerticle(
+        new DebeziumRecordSenderVerticle(debeziumEngineConfig, address),
+        new DeploymentOptions().setWorker(true));
   }
 }
