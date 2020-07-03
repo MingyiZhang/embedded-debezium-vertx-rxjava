@@ -1,0 +1,28 @@
+plugins {
+    id 'io.vertx.vertx-plugin' version '1.1.1'
+}
+
+group 'dev.mingyizhang'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+vertx {
+    mainVerticle = 'MainVerticle'
+    vertxVersion = '3.9.1'
+}
+
+dependencies {
+    implementation 'io.vertx:vertx-core'
+    implementation 'io.vertx:vertx-rx-java2'
+    implementation 'io.debezium:debezium-api:1.2.0.Final'
+    implementation 'io.debezium:debezium-embedded:1.2.0.Final'
+    implementation 'io.debezium:debezium-connector-postgres:1.2.0.Final'
+
+    testImplementation 'io.vertx:vertx-junit5'
+    testImplementation 'org.testcontainers:testcontainers:1.12.5'
+    testImplementation 'org.testcontainers:postgresql:1.12.5'
+    testImplementation 'io.debezium:debezium-testing-testcontainers:1.2.0.Final'
+}
