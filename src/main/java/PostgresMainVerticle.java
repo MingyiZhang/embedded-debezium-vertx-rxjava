@@ -1,15 +1,16 @@
 import config.DatabaseConfig;
 import config.DebeziumEngineConfig;
+import db.PostgresVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.reactivex.core.Vertx;
 import java.sql.Connection;
 
-public class MainVerticle extends AbstractVerticle {
+public class PostgresMainVerticle extends AbstractVerticle {
 
   public static void main(String[] args) {
     final Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new MainVerticle());
+    vertx.deployVerticle(new PostgresMainVerticle());
   }
 
   @Override

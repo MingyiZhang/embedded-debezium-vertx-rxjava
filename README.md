@@ -4,13 +4,13 @@ This example shows how to use Embedded Debezium with Vert.x and RxJava.
 
 ## Architecture
 There are three four verticles:
-- `PostgresVerticle` periodically inserts row to certain table.
+- `db.PostgresVerticle` periodically inserts row to certain table.
 - `DebeziumRecordSenderVerticle` reads records from PostgreSQL database and publish to certain address.
 - `RecordReceiverVerticle` subscribe to certain address and handle the received message.
-- `MainVerticle` deploys verticles.
+- `PostgresMainVerticle` deploys verticles.
 
-In the example, the following verticles are deployed as child verticles of `MainVerticle`:  
-- two `PostgresVerticle`s add random rows to tables `foo` and `bar`, respectively.  
+In the example, the following verticles are deployed as child verticles of `PostgresMainVerticle`:  
+- two `db.PostgresVerticle`s add random rows to tables `foo` and `bar`, respectively.  
 - one `DebeziumRecordSenderVerticle` is deployed.
 - two `RecordReceiverVerticle`s print records based on tables' names. 
 
