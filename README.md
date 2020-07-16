@@ -3,7 +3,7 @@
 This example shows how to use Embedded Debezium with Vert.x, RxJava, PostgreSQL and MySQL. 
 
 ## Architecture
-There are three four verticles:
+There are four verticles:
 - `db.DBVerticle` periodically inserts row to certain table.
 - `DebeziumRecordSenderVerticle` reads record from the database and publish to certain address.
 - `RecordReceiverVerticle` subscribe to certain address and handle the received message.
