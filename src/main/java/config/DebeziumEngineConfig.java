@@ -49,7 +49,7 @@ public class DebeziumEngineConfig {
   public Properties getDebeziumEngineProperties() throws IllegalArgumentException {
     Properties props = new Properties();
     switch (databaseConfig.getDbType()) {
-      case DatabaseConfig.POSTGRESQL:
+      case DatabaseConfig.POSTGRES:
         props.setProperty("connector.class", PostgresConnector.class.getName());
         props.setProperty("database.dbname", databaseConfig.getDbname());
         break;

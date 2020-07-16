@@ -33,8 +33,8 @@ public class DBVerticle extends AbstractVerticle {
                     "insert into %s values (%d, '%s')",
                     tableName, count++, DBUtils.generateRandomString(8));
             statement.execute(sql);
-          } catch (SQLException throwables) {
-            throwables.printStackTrace();
+          } catch (SQLException e) {
+            e.printStackTrace();
           }
         });
   }

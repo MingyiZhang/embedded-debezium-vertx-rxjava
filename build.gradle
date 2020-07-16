@@ -10,7 +10,7 @@ repositories {
 }
 
 vertx {
-    mainVerticle = 'PostgresMainVerticle'
+    mainVerticle = 'MainVerticle'
     vertxVersion = '3.9.1'
 }
 

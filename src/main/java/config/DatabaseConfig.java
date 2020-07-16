@@ -1,21 +1,22 @@
 package config;
 
+import io.vertx.core.json.JsonObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConfig {
 
-  public static final String POSTGRESQL = "postgresql";
+  public static final String POSTGRES = "postgresql";
   public static final String MYSQL = "mysql";
 
   private final String dbType;
-
   private final String hostname;
   private final String port;
   private final String username;
   private final String password;
   private final String dbname;
+
   public DatabaseConfig(
       String dbType, String hostname, int port, String username, String password, String dbname) {
     this.dbType = dbType;
@@ -24,6 +25,15 @@ public class DatabaseConfig {
     this.username = username;
     this.password = password;
     this.dbname = dbname;
+  }
+
+  public DatabaseConfig(JsonObject json) {
+    this.dbType = json.getString("dbtype");
+    this.hostname = json.getString("hostname");
+    this.port = Integer.toString(json.getInteger("port"));
+    this.username = json.getString("username");
+    this.password = json.getString("password");
+    this.dbname = json.getString("dbname");
   }
 
   public String getDbType() {

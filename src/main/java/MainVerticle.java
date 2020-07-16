@@ -3,33 +3,31 @@ import config.DebeziumEngineConfig;
 import db.DBVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Launcher;
+import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.Vertx;
 import java.sql.Connection;
 
 public class MainVerticle extends AbstractVerticle {
 
   public static void main(String[] args) {
+    System.out.println(args[0]);
     Launcher.executeCommand("run", MainVerticle.class.getName(), "--conf", args[0]);
   }
 
   @Override
   public void start() throws Exception {
     DatabaseConfig databaseConfig =
-        new DatabaseConfig(
-            config().getString("dbtype"),
-            config().getString("hostname"),
-            config().getInteger("port"),
-            config().getString("username"),
-            config().getString("password"),
-            config().getString("dbname"));
+        new DatabaseConfig(config().getJsonObject("root"));
 
     DebeziumEngineConfig debeziumEngineConfig =
         new DebeziumEngineConfig(
             "engine",
             DebeziumEngineConfig.getRandomOffsetStorageFileFilename(),
             1000,
-            databaseConfig,
+            new DatabaseConfig(config().getJsonObject("debezium")),
             "dbserver");
+
     Connection connection = databaseConfig.getConnection();
 
     String receiverName1 = "1";

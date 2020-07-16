@@ -1,8 +1,19 @@
 {
-  "dbtype": "postgresql",
-  "hostname": "localhost",
-  "port": 5432,
-  "username": "postgres",
-  "password": "postgres",
-  "dbname": "postgres"
+  "debezium": {
+    "dbtype": "postgresql",
+    "hostname": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "postgres",
+    "dbname": "postgres"
+  },
+  "root": {
+    "dbtype": "postgresql",
+    "hostname": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "postgres",
+    "dbname": "postgres"
+  }
+
 }

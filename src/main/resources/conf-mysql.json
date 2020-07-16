@@ -1,8 +1,18 @@
 {
-  "dbtype": "mysql",
-  "hostname": "localhost",
-  "port": 3306,
-  "username": "root",
-  "password": "mysql",
-  "dbname": "mysql"
+  "debezium": {
+    "dbtype": "mysql",
+    "hostname": "localhost",
+    "port": 3306,
+    "username": "debezium",
+    "password": "dbz",
+    "dbname": "test"
+  },
+  "root": {
+    "dbtype": "mysql",
+    "hostname": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "mysql",
+    "dbname": "test"
+  }
 }
