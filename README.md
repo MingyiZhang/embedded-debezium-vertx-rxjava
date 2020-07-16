@@ -37,7 +37,8 @@ one of the following scripts can be used:
   ```
 
 ## Run in Intellij
-In `MainVerticle`, run the main function. You need to configure to choose `conf-postgres.json` or `conf-mysql.json`. 
+In `MainVerticle`, run the main function. You need to configure to choose `conf-postgres.json` or 
+`conf-mysql.json` as the argument. 
 
 
 > TODO: Need to figure out how to parse config
