@@ -18,7 +18,7 @@ public class DebeziumRecordSenderVerticle extends AbstractVerticle {
   }
 
   @Override
-  public void start() throws Exception {
+  public void start() {
     EventBus eventBus = vertx.eventBus();
     MessageProducer<String> producer = eventBus.publisher(address);
     debeziumEngine =

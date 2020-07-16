@@ -10,7 +10,7 @@ repositories {
 }
 
 vertx {
-    mainVerticle = 'MainVerticle'
+    mainVerticle = 'PostgresMainVerticle'
     vertxVersion = '3.9.1'
 }
 
@@ -20,6 +20,7 @@ dependencies {
     implementation 'io.debezium:debezium-api:1.2.0.Final'
     implementation 'io.debezium:debezium-embedded:1.2.0.Final'
     implementation 'io.debezium:debezium-connector-postgres:1.2.0.Final'
+    implementation 'io.debezium:debezium-connector-mysql:1.2.0.Final'
 
     testImplementation 'io.vertx:vertx-junit5'
     testImplementation 'org.testcontainers:testcontainers:1.12.5'

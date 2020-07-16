@@ -1,26 +1,32 @@
 import config.DatabaseConfig;
 import config.DebeziumEngineConfig;
-import db.PostgresVerticle;
+import db.DBVerticle;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Launcher;
 import io.vertx.reactivex.core.AbstractVerticle;
-import io.vertx.reactivex.core.Vertx;
 import java.sql.Connection;
 
-public class PostgresMainVerticle extends AbstractVerticle {
+public class MainVerticle extends AbstractVerticle {
 
   public static void main(String[] args) {
-    final Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new PostgresMainVerticle());
+    Launcher.executeCommand("run", MainVerticle.class.getName(), "--conf", args[0]);
   }
 
   @Override
   public void start() throws Exception {
     DatabaseConfig databaseConfig =
-        new DatabaseConfig("localhost", 5432, "postgres", "postgres", "postgres");
+        new DatabaseConfig(
+            config().getString("dbtype"),
+            config().getString("hostname"),
+            config().getInteger("port"),
+            config().getString("username"),
+            config().getString("password"),
+            config().getString("dbname"));
+
     DebeziumEngineConfig debeziumEngineConfig =
         new DebeziumEngineConfig(
             "engine",
-            DebeziumEngineConfig.setRandomOffsetStorageFileFilename(),
+            DebeziumEngineConfig.getRandomOffsetStorageFileFilename(),
             1000,
             databaseConfig,
             "dbserver");
@@ -32,8 +38,8 @@ public class PostgresMainVerticle extends AbstractVerticle {
     String tableName2 = "bar";
     String address = "address";
 
-    vertx.deployVerticle(new PostgresVerticle(connection, tableName1, 1000));
-    vertx.deployVerticle(new PostgresVerticle(connection, tableName2, 1000));
+    vertx.deployVerticle(new DBVerticle(connection, tableName1, 1000));
+    vertx.deployVerticle(new DBVerticle(connection, tableName2, 1000));
 
     vertx.deployVerticle(
         new RecordReceiverVerticle(

@@ -1,12 +1,21 @@
 package db;
 
+import io.vertx.reactivex.core.AbstractVerticle;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-public class PostgresVerticle extends AbstractDBVerticle {
+public class DBVerticle extends AbstractVerticle {
 
-  public PostgresVerticle(Connection connection, String tableName, int delay) throws SQLException {
-    super(connection, tableName, delay);
+  private final String tableName;
+  private final int delay;
+  private final Statement statement;
+  private int count = 0;
+
+  public DBVerticle(Connection connection, String tableName, int delay) throws SQLException {
+    this.statement = connection.createStatement();
+    this.tableName = tableName;
+    this.delay = delay;
   }
 
   @Override

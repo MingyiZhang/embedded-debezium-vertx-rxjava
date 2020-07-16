@@ -42,7 +42,7 @@ public class RecordReceiverVerticle extends AbstractVerticle {
   }
 
   @Override
-  public void start() throws Exception {
+  public void start() {
     EventBus eventBus = vertx.eventBus();
     eventBus.consumer(address).toFlowable().filter(messageFilter::apply).subscribe(messageHandler);
     System.out.println(String.format("Receiver %s is ready!", name));

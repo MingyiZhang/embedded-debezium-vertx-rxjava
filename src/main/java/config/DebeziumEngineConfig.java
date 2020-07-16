@@ -1,8 +1,12 @@
 package config;
 
+import io.debezium.connector.mysql.MySqlConnector;
+import io.debezium.connector.postgresql.PostgresConnector;
+import io.debezium.relational.history.FileDatabaseHistory;
 import java.util.OptionalInt;
 import java.util.Properties;
 import java.util.Random;
+import org.apache.kafka.connect.storage.FileOffsetBackingStore;
 
 public class DebeziumEngineConfig {
 
@@ -25,20 +29,41 @@ public class DebeziumEngineConfig {
     this.databaseServerName = databaseServerName;
   }
 
-  public static String setRandomOffsetStorageFileFilename() {
+  private static int generateRandomInt() {
     Random random = new Random();
-    OptionalInt optionalInt = random.ints().findFirst();
+    OptionalInt optionalInt = OptionalInt.empty();
     while (optionalInt.isEmpty()) {
       optionalInt = random.ints().findFirst();
     }
-    return String.format("/tmp/offsets-%d.dat", optionalInt.getAsInt());
+    return optionalInt.getAsInt();
   }
 
-  public Properties getDebeziumEngineProperties() {
+  public static String getRandomOffsetStorageFileFilename() {
+    return String.format("/tmp/offsets-%d.dat", generateRandomInt());
+  }
+
+  private static String getRandomDatabaseHistoryFileFilename() {
+    return String.format("/tmp/dbhistory-%d.dat", generateRandomInt());
+  }
+
+  public Properties getDebeziumEngineProperties() throws IllegalArgumentException {
     Properties props = new Properties();
+    switch (databaseConfig.getDbType()) {
+      case DatabaseConfig.POSTGRESQL:
+        props.setProperty("connector.class", PostgresConnector.class.getName());
+        props.setProperty("database.dbname", databaseConfig.getDbname());
+        break;
+      case DatabaseConfig.MYSQL:
+        props.setProperty("connector.class", MySqlConnector.class.getName());
+        props.setProperty("database.server.id", "85744");
+        props.setProperty("database.history", FileDatabaseHistory.class.getName());
+        props.setProperty("database.history.file.filename", getRandomDatabaseHistoryFileFilename());
+        break;
+      default:
+        throw new IllegalArgumentException("only postgresql and mysql are supported.");
+    }
     props.setProperty("name", name);
-    props.setProperty("connector.class", "io.debezium.connector.postgresql.PostgresConnector");
-    props.setProperty("offset.storage", "org.apache.kafka.connect.storage.FileOffsetBackingStore");
+    props.setProperty("offset.storage", FileOffsetBackingStore.class.getName());
     props.setProperty("offset.storage.file.filename", offsetStorageFileFilename);
     props.setProperty("offset.flush.interval.ms", Integer.toString(offsetFlushIntervalMs));
 
@@ -46,7 +71,6 @@ public class DebeziumEngineConfig {
     props.setProperty("database.port", databaseConfig.getPort());
     props.setProperty("database.user", databaseConfig.getUsername());
     props.setProperty("database.password", databaseConfig.getPassword());
-    props.setProperty("database.dbname", databaseConfig.getDbname());
     props.setProperty("database.server.name", databaseServerName);
     return props;
   }

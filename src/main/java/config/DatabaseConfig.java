@@ -5,19 +5,29 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConfig {
+
+  public static final String POSTGRESQL = "postgresql";
+  public static final String MYSQL = "mysql";
+
+  private final String dbType;
+
   private final String hostname;
   private final String port;
   private final String username;
   private final String password;
   private final String dbname;
-
   public DatabaseConfig(
-      String hostname, int port, String username, String password, String dbname) {
+      String dbType, String hostname, int port, String username, String password, String dbname) {
+    this.dbType = dbType;
     this.hostname = hostname;
     this.port = Integer.toString(port);
     this.username = username;
     this.password = password;
     this.dbname = dbname;
+  }
+
+  public String getDbType() {
+    return dbType;
   }
 
   public String getHostname() {
@@ -41,7 +51,7 @@ public class DatabaseConfig {
   }
 
   public String getJdbcUrl() {
-    return String.format("jdbc:postgresql://%s:%s/%s", hostname, port, dbname);
+    return String.format("jdbc:%s://%s:%s/%s", dbType, hostname, port, dbname);
   }
 
   public Connection getConnection() throws SQLException {
