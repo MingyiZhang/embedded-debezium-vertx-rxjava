@@ -40,15 +40,15 @@ one of the following scripts can be used:
 In `MainVerticle`, run the main function. You need to configure to choose `conf-postgres.json` or 
 `conf-mysql.json` as the argument. 
 
-
-> TODO: Need to figure out how to parse config
-> ## Compile and run
-> ```shell script
-> ./gradlew clean build
-> ```
-> ```shell script
-> java -jar ./build/libs/embedded-debezium-vertx-rxjava-1.0-SNAPSHOT-all.jar
-> ```
+## Compile and run
+```shell script
+./gradlew clean build
+```
+```shell script
+java -jar ./build/libs/embedded-debezium-vertx-rxjava-1.0-SNAPSHOT-all.jar -conf <config-file>
+```
+where `<config-file>` can be `src/main/resources/conf-postgres.json` or `src/main/resources/conf-mysql.json`
+depending on the database that is started before.
 
 ## Expected output
 ```shell script
